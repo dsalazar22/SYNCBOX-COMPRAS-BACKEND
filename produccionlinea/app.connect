@@ -1,0 +1,11 @@
+{"Addr":"127.0.0.1:6379",
+"Dest":"",
+"Vars":"",
+"Pass":"",
+"Db":0,
+"DbTS":0,
+"Pg":"postgres://postgres:syncbox2022.@syncbox.eastus.cloudapp.azure.com:5432/syncboxi40?sslmode=disable",
+"UserURL":"http://127.0.0.1:1705",
+"ModulesActives":"",
+"Files":"",
+"HourStart":""}

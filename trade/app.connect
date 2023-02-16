@@ -1,0 +1,9 @@
+{
+    "Addr":"192.168.115.175:5432",
+    "Pass":"",
+    "Db":0,
+    "pg":"postgres://postgres:syncboxdev@192.168.115.175:5432/ojara?sslmode=disable",
+    "ModulesActives": "[Planning]",
+    "UserURL":"http://192.168.115.136:1705",
+    "files":"/var/syncbox/"
+}
