@@ -380,6 +380,43 @@ func editRequirements(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func requirements(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,  Authorization")
+	if r.Method == "POST" {
+
+		vars := mux.Vars(r)
+		event := vars["event"]
+
+		//ua := r.Header.Get("Authorization")
+		//infoUser := libs.GetUser(ua, "commercial_purchases", event)
+		// fmt.Println(ua, infoUser)
+		// if infoUser.IdUser != "" {
+		//println("c")
+		b, _ := ioutil.ReadAll(r.Body)
+
+		// print(string(b))
+
+		if len(b) > 0 {
+			//println("b")
+			result, err := logic.RequirementsController(string(b), event)
+
+			if err == nil {
+				w.WriteHeader(http.StatusOK)
+				w.Write([]byte(result))
+			} else {
+				w.WriteHeader(202)
+				w.Write([]byte(err.Error()))
+			}
+		} else {
+			w.WriteHeader(205)
+			w.Write([]byte(""))
+		}
+		//}
+	}
+}
+
 //ORDEN DE COMPRA
 func getRequirementsForPurchaseOrders(w http.ResponseWriter, r *http.Request) {
 	//println("Entro al back")
@@ -593,6 +630,7 @@ func main() {
 
 	//REQUERIMIENTOS
 	//router.HandleFunc("/requirementscontroller/{event}", requirementsController)
+	router.HandleFunc("/requirementscontroller/{event}", requirements)
 	router.HandleFunc("/requirements", getRequirements)
 	router.HandleFunc("/addrequirements", addRequirements)
 	router.HandleFunc("/deleterequirements", deleteRequirements)

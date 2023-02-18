@@ -2,10 +2,20 @@ package logic
 
 import (
 	"SyncBoxi40/trade/database"
+	"errors"
 )
 
+func RequirementsController(info string, action string) (string, error) {
+	switch action {
+	case "get-number-requirement":
+		return database.GetNumberRequirement()
+	default:
+		return "", errors.New("Option Invalid")
+	}
+}
+
 func AddRequirement(info, userid string) {
-	println(info, userid)
+	//println(info, userid)
 	database.AddRequirement(info, userid)
 }
 func GetRequirements() (string, error) {

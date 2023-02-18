@@ -50,6 +50,7 @@ func GetRequirementsForPurchaseOrders() (string, error) {
 		select r.*, p.price_list 
 		from trade.requirements r inner join master.products p 
 		on r.product_id = p.product_id 
+		where r.is_active = true
 	)d;
 	`)
 	//println(consulta)
@@ -88,17 +89,17 @@ func AddPurchaseOrder(info string) (string, error) {
 	select (select supplier_id from master.supplier where nit = (select supplier_nit from tmpTable)) , now(), (select cast(nextval('trade.purchases_purchases_id_seq') + 1 as varchar))
 	from tmpTable;
 
-	   insert into trade.purchases_details (purchases_id, product_id, requested_amount, delivered_quantity, requested_date,
+	insert into trade.purchases_details (purchases_id, product_id, requested_amount, delivered_quantity, requested_date,
 		deadline, status_module_id ,price) 
-	   select (select last_value from trade.purchases_purchases_id_seq), product_id, quantity, quantity_delivered, date_agreed, date_agreed, 12, total_sale
-	   from tmpTable;
+	select (select last_value from trade.purchases_purchases_id_seq), product_id, quantity, quantity_delivered, date_agreed, date_agreed, 12, total_sale
+	from tmpTable;
 
 	update trade.requirements
 	set is_active = false
-	 where requirement_id = (select requirement_id from tmpTable);
+	where requirement_id = (select requirement_id from tmpTable);
 	`, info)
 
-	println(consulta)
+	//println(consulta)
 
 	return libs.SendDB(consulta)
 }
@@ -144,7 +145,7 @@ func SaveReportNewDelivery(info string) (string, error) {
 			where purchases_id  = (select purchases_id  from tmpTable);
 			`, info)
 
-	println(consulta)
+	//println(consulta)
 
 	return libs.SendDB(consulta)
 
@@ -186,7 +187,7 @@ func GetDeliveryReports(info string) (string, error) {
 	) d;
 	`, info)
 
-	println(consulta)
+	//println(consulta)
 	return libs.SendDB(consulta)
 }
 

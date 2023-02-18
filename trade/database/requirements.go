@@ -38,6 +38,7 @@ func GetRequirements() (string, error) {
 	from (
 		select *
 		from trade.requirements 
+		where is_active = true
 	)d;
 	`
 
@@ -78,5 +79,17 @@ func Editrequirement(info string) (string, error) {
 	`, info)
 
 	//fmt.Println(consulta)
+	return libs.SendDB(consulta)
+}
+
+func GetNumberRequirement() (string, error) {
+	consulta := (`
+	select array_to_json(array_agg(row_to_json(d)))
+	from (
+		select (MAX (requirement_id) over () + 1 )as requirement_number
+		from trade.requirements r      
+		limit 1	
+	) d;
+	`)
 	return libs.SendDB(consulta)
 }
